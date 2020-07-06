@@ -6,6 +6,7 @@ limit = 99999999999999
 
 def main():
     root = Tk()
+    root.resizable(0,0)
     root.title('simple calc')
     display = Entry(root, width=35, borderwidth=5)
     display.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
@@ -21,7 +22,7 @@ def main():
     button_0 = Button(root, text='0', padx=40, pady=20, command=lambda:displayNum(0,display))
     clear = Button(root, text='clear', padx=80, pady=20, command=lambda:operations('c',display))
     plus = Button(root, text='+', padx=40, pady=20,command=lambda:operations('+',display))
-    equal_button = Button(root, text='=', padx=90, pady=20,command=lambda:equal(display))
+    equal_button = Button(root, text='=', padx=88, pady=20,command=lambda:equal(display))
     minus = Button(root, text='-', padx=40, pady=20,command=lambda:operations('-',display))
     divide = Button(root, text='/', padx=40, pady=20,command=lambda:operations('/',display))
     multiply = Button(root, text='X', padx=40, pady=20,command=lambda:operations('X',display))
@@ -53,6 +54,8 @@ def main():
 
 
 def displayNum(num ,display):
+   if last_symbol == '=':
+       clearDisplay(display)
    number = str(display.get()) + str(num)
    clearDisplay(display)
    display.insert(0, number)
