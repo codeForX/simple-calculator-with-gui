@@ -1,6 +1,6 @@
 from tkinter import *
 
-
+last_symbol = ''
 total = 0
 limit = 99999999999999
 
@@ -21,7 +21,10 @@ def main():
     button_0 = Button(root, text='0', padx=40, pady=20, command=lambda:displayNum(0,display))
     clear = Button(root, text='clear', padx=80, pady=20, command=lambda:operations('c',display))
     plus = Button(root, text='+', padx=40, pady=20,command=lambda:operations('+',display))
-    equal = Button(root, text='=', padx=90, pady=20,command=lambda:operations('=',display))
+    equal_button = Button(root, text='=', padx=90, pady=20,command=lambda:equal(display))
+    minus = Button(root, text='-', padx=40, pady=20,command=lambda:operations('-',display))
+    divide = Button(root, text='/', padx=40, pady=20,command=lambda:operations('/',display))
+    multiply = Button(root, text='X', padx=40, pady=20,command=lambda:operations('X',display))
 
     button_7.grid(row=1, column=0)
     button_8.grid(row=1, column=1)
@@ -36,10 +39,16 @@ def main():
     button_3.grid(row=3, column=2)
 
     button_0.grid(row=4, column=0)
-    clear.grid(row=4, column=1, columnspan=2)
+    plus.grid(row=4, column=1)
+    minus.grid(row=4, column=2)
 
-    plus.grid(row=5, column=0)
-    equal.grid(row=5, column=1, columnspan=2)
+    multiply.grid(row=5, column=0)
+    equal_button.grid(row=5, column=1, columnspan=2)
+
+    
+    divide.grid(row=6, column=0)
+    clear.grid(row=6, column=1, columnspan=2)
+
     root.mainloop()
 
 
@@ -48,25 +57,50 @@ def displayNum(num ,display):
    clearDisplay(display)
    display.insert(0, number)
 
+def equal(display):
+    global last_symbol
+    global total
+
+    firstNum = total
+    secondNum = float(display.get())
+    total = 0 
+    clearDisplay(display)
+
+    if last_symbol == '' or last_symbol == 'c':
+        display.insert(0,secondNum)
+    elif last_symbol == '=':
+        return
+    elif last_symbol == '+':
+        display.insert(0, firstNum + secondNum)
+    elif last_symbol == '-':
+        display.insert(0, firstNum - secondNum)
+    elif last_symbol == 'X':
+        display.insert(0, firstNum * secondNum)
+    elif last_symbol == '/':
+        display.insert(0, firstNum / secondNum)
+    last_symbol = '='
 
 def operations(operation, display):
+    global last_symbol
     global total
-    if operation == 'c':
-        total = 0
-        clearDisplay(display)
-    elif operation == '=':
-        if total == 0:
-            clearDisplay(display)
-            return
-        total = total + int(display.get())
-        clearDisplay(display)
-        display.insert(0, total)
-        total = 0
 
+    firstNum = total
+    secondNum = float(display.get())
+    total = 0 
+    clearDisplay(display)
+    if last_symbol in ['c','=','']:
+        total = secondNum
     elif operation == '+':
-        total = total + int(display.get())
-        clearDisplay(display)
+        total = firstNum + secondNum
+    elif operation == '-':
+        total = firstNum - secondNum
+    elif operation == 'X':
+        total = firstNum * secondNum
+    elif operation == '/':
+        total = firstNum / secondNum
+    last_symbol = operation
 
+        
 
 
 def clearDisplay(display):
